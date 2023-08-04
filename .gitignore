@@ -1,0 +1,12 @@
+.editorconfig
+.idea
+.phpunit.cache
+.phpunit.result.cache
+build
+composer.lock
+coverage
+docs
+logs
+phpunit.xml
+vendor
+tests

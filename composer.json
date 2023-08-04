@@ -1,0 +1,49 @@
+{
+    "name": "kopitar/laravel-teams-logger",
+    "description": "Laravel package for sending configurable messages to Microsoft Teams via the incoming webhook url",
+    "keywords": [
+        "teams",
+        "monolog",
+        "handler",
+        "laravel"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anže Kopitar",
+            "email": "kopitar71@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "ext-curl": "*",
+        "monolog/monolog": "^2.0|^3.0"
+    },
+    "require-dev": {
+        "illuminate/support": "^8.0|^9.0|^10.0",
+        "orchestra/testbench": "^6.0|^7.0|^8.0",
+        "phpunit/phpunit": "^9|^10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kopitar\\LaravelTeamsLogger\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kopitar\\LaravelTeamsLogger\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kopitar\\LaravelTeamsLogger\\TeamsLoggerServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": [
+            "./vendor/bin/phpunit ./tests"
+        ]
+    }
+}
