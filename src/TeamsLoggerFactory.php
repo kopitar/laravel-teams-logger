@@ -10,6 +10,6 @@ class TeamsLoggerFactory
 {
     public function __invoke(array $config): TeamsLogger
     {
-        return new TeamsLogger($config['url'], $config['level'] ?? Level::Debug, $config['type'] ?? 'simple', $config['name']);
+        return new TeamsLogger($config['url'], $config['level'] ?? Level::Debug);
     }
 }

@@ -23,42 +23,82 @@ class TeamsMessage
     /**
      * Builds data to be sent to Teams incoming webhook
      *
-     * @param LogRecord $record
-     * @return array
+     * @param array $record
+     * @return string
+     * @throws \ValueError
      */
-    public function build(LogRecord $record): array
+    public function build(array $record): string
     {
-        if ($this->type === 'simple') {
-            return [
-                'text' => $record['message'],
-                'themeColor' => (string) new Color($record['level_name']),
-            ];
-        } elseif ($this->type === 'card') {
-            $facts = $record['context']['facts'] ?? [];
-            $factsArr = [];
+        $context = $this->checkLogRecordContextData($record['context']);
 
-            foreach ($facts as $name => $value) {
-                $factsArr[] = [
-                    'name' => ucfirst((string) $name),
-                    'value' => (string) $value,
-                ];
-            }
+        if ($this->type === 'simple') {
+            return json_encode([
+                'text' => $record['message'],
+                'themeColor' => $context['themeColor'] ?? Color::get($record['level']->name)
+            ]);
+        } elseif ($this->type === 'card') {
             $message = [
                 '@type' => 'MessageCard',
                 '@context' => 'http://schema.org/extensions',
-                'themeColor' => (string) new Color($record['level_name']),
+                'themeColor' => $context['themeColor'] ?? Color::get($record['level']->name),
                 'summary' => $record['channel'],
-                'sections' => [[
-                    'activitySubTitle' => $record['message'],
-                    'activityTitle' => $this->name,
-                    'activityImage' => config('teams_logger.use_avatar') ? (string) new Avatar($record['level_name']) : null,
-                    'facts' =>  $factsArr,
-                    'markdown' => true,
-                ]],
+                'sections' => [
+                    [
+                        'activityTitle' => $context['title'],
+                        'activitySubTitle' => $record['message'],
+                        'activityImage' => $context['useAvatar'] ? Avatar::get($record['level']->name) : null,
+                        'facts' =>  $context['facts'],
+                        'markdown' => $context['useMarkdown'],
+                    ],
+                ],
+                'potentialAction' => $context['actions']
             ];
-
-            return $message;
+            return json_encode($message);
+        } elseif ($this->type === 'json') {
+            return $record['message'];
         }
-        throw new \ValueError('type argument must be one of: simple, card');
+        throw new \ValueError('type argument must be one of: simple, card, json');
+    }
+
+    /**
+     * Check LogRecord context for facts, actions and any overriden config values
+     *
+     * @param array $context
+     * @return array
+     */
+    private function checkLogRecordContextData(array $context): array
+    {
+        $data = [
+            'themeColor' => $context['themeColor'] ?? null,
+            'title' => $context['title'] ?? $this->name,
+            'actions' => $context['actions'] ?? [],
+            'useAvatar' => config('teams_logger.use_avatar'),
+            'useMarkdown' => config('teams_logger.use_markdown'),
+            'facts' => [],
+        ];
+
+        // check if use_avatar config is overriden
+        if(array_key_exists('avatar', $context) && is_bool($context['avatar'])) {
+            $data['useAvatar'] = $context['avatar'];
+        }
+
+        // check if use_markdown config is overriden
+        if(array_key_exists('markdown', $context) && is_bool($context['markdown'])) {
+            $data['useMarkdown'] = $context['markdown'];
+        }
+
+        // get facts if any and build facts array
+        $facts = $context['facts'] ?? [];
+        $factsArr = [];
+
+        foreach ($facts as $name => $value) {
+            $factsArr[] = [
+                'name' => ucfirst((string) $name),
+                'value' => (string) $value,
+            ];
+        }
+        $data['facts'] = $factsArr;
+
+        return $data;
     }
 }

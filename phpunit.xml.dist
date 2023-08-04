@@ -13,12 +13,4 @@
     <php>
         <env name="TEAMS_WEBHOOK_URL" value=""/>
     </php>
-    <logging>
-        <testdoxText outputFile="logs/tests.txt"/>
-    </logging>
-    <source>
-        <include>
-            <directory>src</directory>
-        </include>
-    </source>
 </phpunit>

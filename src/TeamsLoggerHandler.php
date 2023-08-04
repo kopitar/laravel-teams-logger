@@ -13,32 +13,34 @@ use Monolog\LogRecord;
 
 class TeamsLoggerHandler extends AbstractProcessingHandler
 {
-    public function __construct($url, $level, $type, $name, $bubble = true)
+    public function __construct($url, $level, $name, $bubble = true)
     {
         parent::__construct($level, $bubble);
 
         $this->url = $url;
-        $this->type = $type;
         $this->name = $name;
     }
 
     /**
-     * Prepares a json encoded message to be sent depending on incoming data
+     * Return a json encoded message to be sent depending on incoming data
      *
      * @param LogRecord $record
      * @return string
      */
     public function makeMessage(LogRecord $record): string
     {
-        if (array_key_exists('type', $record['context'])) {
-            $this->type = $record['context']['type'];
+        $data = (array) $record;
+
+        if (!array_key_exists('type', $data['context'])) {
+            $data['context']['type'] = config('teams_logger.type') ?? 'simple';
         }
 
-        $message = new TeamsMessage($this->type, $this->name);
-
-        return json_encode(
-            $message->build($record)
+        $message = new TeamsMessage(
+            $data['context']['type'],
+            $this->name
         );
+
+        return $message->build($data);
     }
 
     /**
