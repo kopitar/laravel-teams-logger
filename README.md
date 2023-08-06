@@ -1,4 +1,6 @@
 # Laravel Teams Logger
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/kopitar/laravel-teams-logger.svg?style=flat-square)](https://packagist.org/packages/kopitar/laravel-teams-logger)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kopitar/laravel-teams-logger/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/kopitar/laravel-teams-logger/actions?query=workflow%3Arun-tests+branch%3Amain)
 
 Log handler for Laravel for sending log messages to Microsoft Teams with the  [Teams Incoming Webhook Connector](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook).
 
