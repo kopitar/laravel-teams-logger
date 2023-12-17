@@ -71,7 +71,7 @@ class TeamsLoggerTest extends Orchestra
             $result = $monolog->addRecord(Level::Debug, 'Test:' . time(), ['type' => 'simple']);
         } catch(\RunTimeException $e) {
             // sometimes webhook url is not available (or TEAMS_WEBHOOK_URL was not provided either by mistake or intentionally)
-            $this->assertContains('Curl error (code 7)', $e->getMessage());
+            $this->assertStringContainsString('Curl error (code 7)', $e->getMessage());
             $this->assertInstanceOf(\RunTimeException::class, $e);
             return;
         }
