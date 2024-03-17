@@ -93,3 +93,5 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/phpunit
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
