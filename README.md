@@ -1,15 +1,18 @@
 # Laravel Teams Logger
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kopitar/laravel-teams-logger.svg?style=flat-square)](https://packagist.org/packages/kopitar/laravel-teams-logger)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kopitar/laravel-teams-logger/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/kopitar/laravel-teams-logger/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![Total downloads](https://img.shields.io/packagist/dt/kopitar/laravel-teams-logger.svg?style=flat-square)](https://packagist.org/packages/kopitar/laravel-teams-logger)
 
 Log handler for Laravel for sending log messages to Microsoft Teams with the  [Teams Incoming Webhook Connector](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook).
 
-**Tested on Laravel 10.x (PHP 8.2, 8.1)**
+**Tested on:**
+* Laravel 10.x (PHP 8.3, 8.2, 8.1)
+* Laravel 11.x (PHP 8.3, 8.2)
 
 # Features
 
 * send simple styled log messages  
-* send card styled log messages
+* send card styled **log* messages
 * include facts in card log messages
 * include actions in card log messages
 * configurable content and visuals (colors, avatars)
@@ -64,7 +67,7 @@ To change colors or avatar images you need to replace the values found for each 
 To send a simple style log message to Teams use the following code (assuming `type` is configured to `simple`):
 
 ```php
-Log::channel('teams')->debug('Neque porro quisquam est qui dolorem!');
+Log::channel('teams')->info('Neque porro quisquam est qui dolorem!');
 ```
 
 **Result:**
@@ -77,7 +80,7 @@ Log::channel('teams')->debug('Neque porro quisquam est qui dolorem!');
 To send a card style log message to Teams use the following code (assuming `type` is configured to `card` and `use_avatar` is set to `true`):
 
 ```php
-Log::channel('teams')->info('Neque porro quisquam est qui dolorem!');
+Log::channel('teams')->debug('Neque porro quisquam est qui dolorem!');
 ```
 
 **Result:**
